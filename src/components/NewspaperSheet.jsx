@@ -1,20 +1,19 @@
-import { useState } from 'react'
-import { motion, useReducedMotion } from 'framer-motion'
-import { Button } from './Button'
 import { PaperGrain } from './effects/PaperGrain'
 import { DustParticles } from './effects/DustParticles'
 import { WaxSeal } from './effects/WaxSeal'
 import { BrotherhoodRow } from './illustrations'
 import { newspaper, wedding } from '../data/invitation'
-import { DUR, EASE } from '../lib/motion'
-import { play, unlockAudio } from '../lib/audio'
 
-const FOLD_MS = 1500
+/**
+ * The front page of The Brotherhood Gazette.
+ *
+ * This is not a screen in the experience — it is the printed artefact the link
+ * unfurls into when it is shared. <SocialCard> frames it for capture, and
+ * scripts/make-og.mjs turns it into public/og.png.
+ */
 
 function ColumnHeading({ children }) {
-  return (
-    <h2 className="column-heading mb-2 border-b border-ink/70 pb-1 text-ink">{children}</h2>
-  )
+  return <h2 className="column-heading mb-2 border-b border-ink/70 pb-1 text-ink">{children}</h2>
 }
 
 /** The five register bars printed at the top of the sheet. */
@@ -28,14 +27,10 @@ function RegisterBars() {
   )
 }
 
-/**
- * The printed page itself. Rendered whole while the visitor is reading, then
- * rendered twice — clipped to each half — for the fold.
- */
-function Sheet({ onApply, applying }) {
+export function NewspaperSheet({ animateGrain = true }) {
   return (
     <div className="relative paper-aged newsprint-lines px-5 pb-14 pt-4 sm:px-10 sm:pb-16 sm:pt-6 lg:px-14">
-      <PaperGrain opacity={0.09} />
+      <PaperGrain opacity={0.09} animate={animateGrain} />
 
       <div className="relative mx-auto max-w-broadsheet">
         {/* ---------- Masthead ---------- */}
@@ -79,7 +74,10 @@ function Sheet({ onApply, applying }) {
               <ColumnHeading>Inside this issue</ColumnHeading>
               <ul className="space-y-2">
                 {newspaper.contents.map((item) => (
-                  <li key={item.label} className="flex items-baseline gap-2 text-[0.82rem] text-ink/90">
+                  <li
+                    key={item.label}
+                    className="flex items-baseline gap-2 text-[0.82rem] text-ink/90"
+                  >
                     <span className="whitespace-nowrap">{item.label}</span>
                     <span aria-hidden="true" className="leader-dots flex-1 translate-y-[-0.2em]" />
                     <span className="whitespace-nowrap tabular-nums">{item.page}</span>
@@ -110,8 +108,7 @@ function Sheet({ onApply, applying }) {
               <div
                 className="relative flex h-[190px] items-end justify-center overflow-hidden px-4 pb-8 sm:h-[250px]"
                 style={{
-                  background:
-                    'linear-gradient(165deg, #2a2521 0%, #1a1613 55%, #221d19 100%)',
+                  background: 'linear-gradient(165deg, #2a2521 0%, #1a1613 55%, #221d19 100%)',
                   boxShadow: 'inset 0 0 60px rgba(0,0,0,0.65)',
                 }}
               >
@@ -127,17 +124,11 @@ function Sheet({ onApply, applying }) {
               </figcaption>
             </figure>
 
-            <div className="mt-6">
-              <Button
-                variant="press"
-                size="lg"
-                full
-                onClick={onApply}
-                disabled={applying}
-                className="justify-center"
-              >
+            {/* A printed call, not a control: this page is an artefact */}
+            <div className="mt-6 bg-ink px-8 py-4 text-center shadow-[0_2px_0_rgba(20,17,15,0.35)]">
+              <span className="font-body text-[0.78rem] font-medium uppercase tracking-[0.3em] text-paper">
                 {newspaper.cta}
-              </Button>
+              </span>
             </div>
           </div>
 
@@ -182,116 +173,5 @@ function Sheet({ onApply, applying }) {
         </footer>
       </div>
     </div>
-  )
-}
-
-/**
- * Screen 1 — the front page.
- *
- * Pressing "Applications now open" folds the sheet inward from the centre
- * while the camera pushes into the headline, which becomes the loading screen.
- */
-export function Newspaper({ onAdvance }) {
-  const reduced = useReducedMotion()
-  const [folding, setFolding] = useState(false)
-
-  const handleApply = () => {
-    if (folding) return
-    unlockAudio()
-    play('fold')
-    setFolding(true)
-    window.setTimeout(() => onAdvance(), reduced ? 500 : FOLD_MS)
-  }
-
-  const sheet = <Sheet onApply={handleApply} applying={folding} />
-
-  const halfTransition = { duration: FOLD_MS / 1000, ease: EASE }
-
-  return (
-    <motion.section
-      className="relative min-h-[100svh] overflow-hidden bg-ink px-2 py-3 sm:px-6 sm:py-8"
-      initial={{ opacity: 0, scale: 1.03 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: DUR.long, ease: EASE }}
-    >
-      <DustParticles count={14} className="fixed z-0" />
-
-      {/* The headline the camera pushes into as the page folds away */}
-      {folding && !reduced && (
-        <motion.div
-          aria-hidden="true"
-          className="pointer-events-none fixed inset-0 z-0 flex items-center justify-center"
-          initial={{ opacity: 0, scale: 0.72 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: FOLD_MS / 1000, ease: EASE }}
-        >
-          <span className="text-center font-slab text-[clamp(3.4rem,15vw,8.5rem)] font-black uppercase leading-[0.84] tracking-[-0.02em] text-paper/95">
-            {newspaper.headline.map((line) => (
-              <span key={line} className="block">
-                {line}
-              </span>
-            ))}
-          </span>
-        </motion.div>
-      )}
-
-      <motion.div
-        className="relative z-10 mx-auto max-w-[100rem] [perspective:2000px]"
-        animate={
-          folding && !reduced
-            ? { scale: 1.16, y: -18, filter: 'blur(2px)' }
-            : { scale: 1, y: 0, filter: 'blur(0px)' }
-        }
-        transition={halfTransition}
-        style={{ boxShadow: folding ? 'none' : undefined }}
-      >
-        {folding ? (
-          /* Two clipped copies of the page, hinged at the crease. Hidden from
-             assistive tech: it is the same sheet, mid-transition. */
-          <div className="flex preserve-3d" aria-hidden="true">
-            {/* Left leaf */}
-            <motion.div
-              className="w-1/2 origin-right overflow-hidden preserve-3d backface-hidden"
-              initial={{ rotateY: 0 }}
-              animate={{ rotateY: -86 }}
-              transition={halfTransition}
-            >
-              <div className="relative w-[200%]">
-                {sheet}
-                {/* The outer edge swings away from the light as the leaf turns */}
-                <motion.span
-                  aria-hidden="true"
-                  className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/40 to-transparent"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 0.9 }}
-                  transition={halfTransition}
-                />
-              </div>
-            </motion.div>
-
-            {/* Right leaf */}
-            <motion.div
-              className="w-1/2 origin-left overflow-hidden preserve-3d backface-hidden"
-              initial={{ rotateY: 0 }}
-              animate={{ rotateY: 86 }}
-              transition={halfTransition}
-            >
-              <div className="relative w-[200%] -translate-x-1/2">
-                {sheet}
-                <motion.span
-                  aria-hidden="true"
-                  className="absolute inset-0 bg-gradient-to-l from-black/90 via-black/40 to-transparent"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 0.9 }}
-                  transition={halfTransition}
-                />
-              </div>
-            </motion.div>
-          </div>
-        ) : (
-          <div className="shadow-sheet">{sheet}</div>
-        )}
-      </motion.div>
-    </motion.section>
   )
 }

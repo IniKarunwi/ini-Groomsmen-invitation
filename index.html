@@ -10,12 +10,37 @@
       content="Men Wanted — a confidential invitation to stand beside the groom. Operation Altar, September 26, 2026."
     />
     <title>Men Wanted — The Brotherhood Gazette</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&family=Roboto+Slab:wght@400;700;900&family=JetBrains+Mono:wght@400;500&display=swap"
-      rel="stylesheet"
+
+    <!-- Shared links unfurl into the front page of the Gazette.
+         VITE_SITE_URL is set in .env; og:image must be an absolute URL. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="The Brotherhood Gazette" />
+    <meta property="og:title" content="Men Wanted" />
+    <meta
+      property="og:description"
+      content="Looking for the men who will stand beside a groom on one of the most important days of his life. Applications now open."
     />
+    <meta property="og:url" content="%VITE_SITE_URL%" />
+    <meta property="og:image" content="%VITE_SITE_URL%/og.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Front page of The Brotherhood Gazette: MEN WANTED" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Men Wanted" />
+    <meta
+      name="twitter:description"
+      content="Looking for the men who will stand beside a groom on one of the most important days of his life."
+    />
+    <meta name="twitter:image" content="%VITE_SITE_URL%/og.jpg" />
+    <!-- Fonts are self-hosted (see scripts/fetch-fonts.py) — no third-party request -->
+    <link
+      rel="preload"
+      href="/fonts/RobotoSlab-900.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="preload" href="/fonts/Inter-400.woff2" as="font" type="font/woff2" crossorigin />
   </head>
   <body>
     <div id="root"></div>

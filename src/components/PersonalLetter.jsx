@@ -6,20 +6,26 @@ import { Letter, Reveal } from './Letter'
 import { Button } from './Button'
 import { Signature } from './Signature'
 import { PhotoFrame } from './PhotoFrame'
-import { wedding } from '../data/invitation'
+import { personalLetter, wedding } from '../data/invitation'
 import { DUR, EASE } from '../lib/motion'
+import { play } from '../lib/audio'
 
 /**
- * Screen 6 — the personal letter, and the emotional centre of the experience.
+ * Screen 3 — the personal letter, and the emotional centre of the experience.
  *
  * The envelope already carries this man's name. Once it is open the letter
  * unfolds and reveals itself one paragraph at a time, slowly enough to read
- * without hurrying, and the signature is the very last thing to arrive.
+ * without hurrying; the photograph is mounted beside it, and the signature is
+ * the very last thing to arrive.
+ *
+ * The letter ends by asking, and the answer is given here — pressing "Yes"
+ * is what sends the recruitment notice to be stamped.
  */
-export function PersonalLetter({ groomsman, onAdvance }) {
+export function PersonalLetter({ groomsman, onAccept }) {
   const reduced = useReducedMotion()
   const [opened, setOpened] = useState(false)
   const [read, setRead] = useState(false)
+  const [wrongAnswer, setWrongAnswer] = useState(false)
   const letterRef = useRef(null)
 
   useEffect(() => {
@@ -30,7 +36,7 @@ export function PersonalLetter({ groomsman, onAdvance }) {
     return () => window.clearTimeout(timer)
   }, [opened, reduced])
 
-  // The paper reveals paragraph by paragraph; the button waits for the last one.
+  // The paper reveals paragraph by paragraph; the answer waits for the last one.
   // Longer letters use a slightly tighter cadence so the final paragraph is not
   // still arriving a quarter of a minute after the paper opened.
   const paragraphs = groomsman.letter
@@ -42,6 +48,12 @@ export function PersonalLetter({ groomsman, onAdvance }) {
     const timer = window.setTimeout(() => setRead(true), readingDelay * 1000)
     return () => window.clearTimeout(timer)
   }, [opened, readingDelay])
+
+  const handleDecline = () => {
+    play('key')
+    setWrongAnswer(true)
+    window.setTimeout(() => setWrongAnswer(false), 1500)
+  }
 
   return (
     <Layout
@@ -57,13 +69,13 @@ export function PersonalLetter({ groomsman, onAdvance }) {
           animate={{ opacity: 1 }}
           transition={{ duration: DUR.base, ease: EASE }}
         >
-          A letter written for one man only
+          {personalLetter.kicker}
         </motion.p>
 
         <div className="mx-auto max-w-reading">
           <Envelope
             recipient={groomsman.name}
-            band="By hand — not to be forwarded"
+            band={personalLetter.envelopeBand}
             onOpened={() => setOpened(true)}
           />
         </div>
@@ -76,45 +88,50 @@ export function PersonalLetter({ groomsman, onAdvance }) {
                   mounted below the last paragraph. */}
               <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_16rem] lg:items-start lg:gap-10">
                 <div className="lg:order-1">
-              <Letter stagger={stagger}>
-                <Reveal className="mb-6 text-right text-[0.8rem] italic text-ink/55">
-                  {wedding.monthYear}
-                </Reveal>
+                  <Letter stagger={stagger}>
+                    <Reveal className="mb-6 text-right text-[0.8rem] italic text-ink/55">
+                      {wedding.monthYear}
+                    </Reveal>
 
-                <Reveal as="h1" className="font-display text-3xl font-bold text-ink sm:text-4xl">
-                  {groomsman.name},
-                </Reveal>
+                    <Reveal as="h1" className="font-display text-3xl font-bold text-ink sm:text-4xl">
+                      {groomsman.name},
+                    </Reveal>
 
-                {paragraphs.map((paragraph, i) => (
-                  <Reveal
-                    as="p"
-                    key={paragraph}
-                    className={`text-[0.97rem] leading-[1.9] text-ink/90 ${i === 0 ? 'mt-6' : 'mt-5'}`}
-                  >
-                    {paragraph}
-                  </Reveal>
-                ))}
+                    {paragraphs.map((paragraph, i) => (
+                      <Reveal
+                        as="p"
+                        key={paragraph}
+                        className={`text-[0.97rem] leading-[1.9] text-ink/90 ${
+                          i === 0 ? 'mt-6' : 'mt-5'
+                        }`}
+                      >
+                        {paragraph}
+                      </Reveal>
+                    ))}
 
-                <Reveal aria-hidden="true" className="my-9 h-px w-24 bg-ink/25" />
+                    <Reveal aria-hidden="true" className="my-9 h-px w-24 bg-ink/25" />
 
-                <Reveal as="p" className="text-[0.82rem] text-ink/55">
-                  Signed,
-                </Reveal>
+                    <Reveal as="p" className="text-[0.82rem] text-ink/55">
+                      {personalLetter.signOff}
+                    </Reveal>
 
-                <Reveal className="mt-1">
-                  <Signature name={wedding.groom} size="lg" delay={0.5} />
-                </Reveal>
+                    <Reveal className="mt-1">
+                      <Signature name={wedding.groom} size="lg" delay={0.5} />
+                    </Reveal>
 
-                <Reveal as="p" className="mt-5 text-[0.68rem] uppercase tracking-[0.2em] text-ink/40">
-                  {groomsman.role} · {wedding.operation}
-                </Reveal>
-              </Letter>
+                    <Reveal
+                      as="p"
+                      className="mt-5 text-[0.68rem] uppercase tracking-[0.2em] text-ink/40"
+                    >
+                      {groomsman.role} · {wedding.operation}
+                    </Reveal>
+                  </Letter>
                 </div>
 
                 <aside className="mt-10 lg:order-2 lg:mt-2 lg:sticky lg:top-24">
                   <PhotoFrame
                     src={groomsman.photo}
-                    alt={`${groomsman.name} and Ini`}
+                    alt={`${groomsman.name} and ${wedding.groom}`}
                     caption={groomsman.photoCaption}
                     delay={0.5}
                     tilt={2}
@@ -122,15 +139,46 @@ export function PersonalLetter({ groomsman, onAdvance }) {
                 </aside>
               </div>
 
+              {/* ---------- The answer ---------- */}
               <motion.div
-                className="mt-8 lg:mx-auto lg:max-w-reading"
+                className="relative mt-10 lg:mx-auto lg:max-w-reading"
                 initial={{ opacity: 0, y: 26 }}
                 animate={read ? { opacity: 1, y: 0 } : { opacity: 0, y: 26 }}
                 transition={{ duration: DUR.slow, ease: EASE }}
               >
-                <Button variant="outline" size="lg" full onClick={onAdvance}>
-                  Continue
-                </Button>
+                <AnimatePresence mode="wait" initial={false}>
+                  {wrongAnswer ? (
+                    <motion.div
+                      key="wrong"
+                      className="flex min-h-[7.5rem] items-center justify-center border border-gold/30 bg-ink-soft px-6 text-center"
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0, x: reduced ? 0 : [0, -6, 5, -3, 0] }}
+                      exit={{ opacity: 0, y: -12 }}
+                      /* Brisk on purpose: the joke only has 1.5s to land */
+                      transition={{ duration: 0.4, ease: EASE }}
+                    >
+                      <p className="font-display text-2xl font-semibold text-paper">
+                        {personalLetter.wrongAnswer}
+                      </p>
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="choice"
+                      className="space-y-3"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.4, ease: EASE }}
+                    >
+                      <Button variant="outline" size="lg" full onClick={onAccept}>
+                        {personalLetter.accept}
+                      </Button>
+                      <Button variant="ghost" size="md" full onClick={handleDecline}>
+                        {personalLetter.decline}
+                      </Button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </motion.div>
             </motion.div>
           )}

@@ -74,8 +74,16 @@ export const openingLetter = {
   pledges: ['I trust you.', 'I respect you.', 'I thank God for your place in my life.'],
   closingBody:
     'Of all the men I know, you are among the few I want standing beside me as I begin this new chapter.',
-  question: 'So I have one question…',
+  // The opening letter hands over to the roster; the question itself waits
+  // until the personal letter, where each man is asked by name.
+  rosterPrompt: 'So find your name…',
   signOff: 'With honour,',
+}
+
+export const personalLetter = {
+  kicker: 'A letter written for one man only',
+  envelopeBand: 'By hand — not to be forwarded',
+  signOff: 'Signed,',
   accept: "Yes, I'd be honoured",
   decline: 'No',
   wrongAnswer: '😂 Wrong answer.',

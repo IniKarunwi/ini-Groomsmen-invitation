@@ -28,7 +28,7 @@ export const groomsmen = [
       'You have earned a place in my life that I don’t take lightly.',
       'As I thought about the men I wanted standing beside me on one of the most important days of my life, your name was never a question.',
       'It would be an incredible honour to have you by my side as I begin this new chapter with Princess.',
-      'Thank you for accepting to stand with me.',
+      'Will you do me that honour?',
     ],
   },
   {
@@ -46,7 +46,7 @@ export const groomsmen = [
       'Watching the way you serve God has also challenged me. The excellence, consistency, and humility you bring to ministry remind me that God entrusts great gifts to faithful people.',
       'You’re one of those people.',
       'As I prepare to marry Princess, I can’t imagine this moment without you standing beside me.',
-      'Thank you for accepting to stand with me.',
+      'Brother, will you do me the honour of being one of my groomsmen?',
     ],
   },
   {
@@ -66,7 +66,7 @@ export const groomsmen = [
       'Watching you grow in your career, your marriage, and your walk with God has been inspiring. You’ve become the kind of man any friend would be proud to have in his corner.',
       'I also know that coming all the way to Abuja isn’t a small commitment. It costs time, money, and energy, and that makes your presence even more meaningful to me.',
       'Having you beside me on this day would mean more than I can properly put into words.',
-      'Thank you for accepting to stand with me.',
+      'Will you stand with me?',
     ],
   },
   {
@@ -88,7 +88,7 @@ export const groomsmen = [
       'When I pictured my wedding day, I knew I wanted the men who helped shape my life standing beside me.',
       'You are one of those men.',
       'It would mean the world to have you there.',
-      'Thank you for accepting to stand with me.',
+      'Will you stand with me?',
     ],
   },
   {
@@ -109,7 +109,7 @@ export const groomsmen = [
       'I’m incredibly grateful that you’re that man for me.',
       'As I prepare to marry Princess, I honestly can’t imagine celebrating this day without you standing beside me.',
       'It would be one of the greatest honours to have you as one of my groomsmen.',
-      'Thank you for accepting to stand with me.',
+      'What do you say?',
     ],
   },
   {
@@ -130,7 +130,7 @@ export const groomsmen = [
       'You’re the kind of brother every man hopes to have beside him.',
       'As I step into marriage, I’d love for you to continue being part of this journey.',
       'Let’s write this chapter together.',
-      'Thank you for accepting to stand with me.',
+      'Will you stand beside me?',
     ],
   },
   {
@@ -156,7 +156,7 @@ export const groomsmen = [
       'As I prepare to marry Princess, there are few people whose prayers, wisdom, and presence mean as much to me as yours.',
       'I’d be deeply honoured if you stood beside me once again, this time as one of my groomsmen.',
       'Just as I celebrated one of the greatest days of your life, I hope you’ll help me celebrate mine.',
-      'Thank you for accepting to stand with me.',
+      'Will you do me that honour?',
     ],
   },
 ]
