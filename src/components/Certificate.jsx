@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { Layout } from './Layout'
 import { Button } from './Button'
@@ -8,6 +8,69 @@ import { Signature } from './Signature'
 import { certificate, wedding } from '../data/invitation'
 import { DUR, EASE } from '../lib/motion'
 import { play } from '../lib/audio'
+import { useDownloadImage } from '../hooks/useDownloadImage'
+
+/** Press to keep the certificate: it renders the sheet to a PNG and saves it. */
+function DownloadButton({ onDownload, state }) {
+  const reduced = useReducedMotion()
+
+  const labels = {
+    idle: 'Download certificate',
+    working: 'Preparing certificate…',
+    done: 'Certificate saved',
+    failed: 'Download failed — try again',
+  }
+
+  return (
+    <motion.button
+      type="button"
+      data-no-capture="true"
+      onClick={onDownload}
+      disabled={state === 'working'}
+      aria-label={labels[state]}
+      title={labels[state]}
+      className="absolute right-3 top-3 z-20 flex h-9 w-9 items-center justify-center border border-ink/25 bg-paper/70 text-ink/60 backdrop-blur-sm tap-transparent disabled:cursor-wait"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      whileHover={reduced ? undefined : { borderColor: 'rgba(176,138,46,0.9)', color: '#B08A2E', y: -1 }}
+      whileFocus={reduced ? undefined : { borderColor: 'rgba(176,138,46,0.9)', color: '#B08A2E' }}
+      whileTap={reduced ? undefined : { y: 1, boxShadow: 'inset 0 2px 5px rgba(0,0,0,0.25)' }}
+      transition={{ duration: 0.5, delay: state === 'idle' ? 3.6 : 0, ease: EASE }}
+    >
+      {state === 'working' ? (
+        <motion.span
+          aria-hidden="true"
+          className="block h-3.5 w-3.5 rounded-full border border-current border-t-transparent"
+          animate={{ rotate: 360 }}
+          transition={{ duration: 1.1, repeat: Infinity, ease: 'linear' }}
+        />
+      ) : state === 'done' ? (
+        <svg viewBox="0 0 20 20" className="h-4 w-4" aria-hidden="true">
+          <path
+            d="M3 11 L8 16 L17 4"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+          />
+        </svg>
+      ) : (
+        <svg viewBox="0 0 20 20" className="h-4 w-4" aria-hidden="true">
+          <path d="M10 2 V13" fill="none" stroke="currentColor" strokeWidth="1.8" />
+          <path
+            d="M5.5 8.5 L10 13 L14.5 8.5"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path d="M3.5 17 H16.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+        </svg>
+      )}
+    </motion.button>
+  )
+}
 
 /** A small filigree mark in each corner of the frame. */
 function CornerFlourish({ position }) {
@@ -40,10 +103,18 @@ function CornerFlourish({ position }) {
 export function Certificate({ groomsman, onRestart }) {
   const reduced = useReducedMotion()
   const [joined, setJoined] = useState(false)
+  const sheetRef = useRef(null)
+  const { download, state: downloadState } = useDownloadImage()
 
   const handleJoin = () => {
     play('chime')
     setJoined(true)
+  }
+
+  const handleDownload = () => {
+    play('paper')
+    const who = groomsman.name.replace(/\s+/g, '-')
+    download(sheetRef.current, `Certificate-of-Brotherhood-${who}.png`)
   }
 
   return (
@@ -60,12 +131,15 @@ export function Certificate({ groomsman, onRestart }) {
 
         {/* The certificate */}
         <motion.div
+          ref={sheetRef}
           className="paper-surface relative overflow-hidden shadow-sheet"
           initial={reduced ? { opacity: 0 } : { y: 110, opacity: 0, filter: 'blur(6px)' }}
           animate={reduced ? { opacity: 1 } : { y: 0, opacity: 1, filter: 'blur(0px)' }}
           transition={{ duration: DUR.long, ease: EASE }}
         >
           <PaperGrain opacity={0.07} />
+
+          <DownloadButton onDownload={handleDownload} state={downloadState} />
 
           <div className="relative m-3 border-2 border-gold/60 p-1">
             <div className="relative border border-gold/40 px-5 py-9 text-center sm:px-9 sm:py-11">

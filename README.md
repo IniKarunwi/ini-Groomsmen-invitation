@@ -30,7 +30,13 @@ npm run fonts    # re-download the self-hosted typefaces
 | 4 | **Dossier** | ACCEPTED comes down on the recruitment notice |
 | 5 | **Mission briefing** | Five classified files, including the prayer checklist |
 | 6 | **Brotherhood** | Iron sharpens iron |
-| 7 | **Certificate** | Commissioned, sealed, signed, and into the WhatsApp group |
+| 7 | **Certificate** | Commissioned, sealed, signed, downloadable, and into the WhatsApp group |
+
+Both envelopes break their own wax a second and a half after they settle —
+pressing the seal simply does it sooner. The certificate carries a download
+control that renders the sheet to a PNG at 2× (`Certificate-of-Brotherhood-Jacob.png`);
+the renderer is only fetched when someone presses it, and because the fonts and
+photographs are all served from this origin the canvas is never tainted.
 
 The front page of the Gazette is **not** a screen — it is the card the link
 unfurls into when it is shared. See *The share card* below.
@@ -87,6 +93,9 @@ layout never shifts when you add one.
 
 1. Drop the image into `public/photos/` (portrait crops suit the 4:5 window)
 2. Point `photo` at it — `'/photos/jacob.jpg'` — and optionally set `photoCaption`
+
+The same picture is filed in his dossier on the ACCEPTED screen, so one field
+covers both.
 
 On a wide screen the frame sits beside the letter and stays with the reader as
 they scroll; on a phone it is mounted below the last paragraph, enclosed with

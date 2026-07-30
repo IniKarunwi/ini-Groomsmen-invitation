@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { motion, useReducedMotion } from 'framer-motion'
 import { WaxSeal } from './effects/WaxSeal'
 import { DUR, EASE } from '../lib/motion'
@@ -7,11 +7,15 @@ import { wedding } from '../data/invitation'
 
 const CRACK_TO_FLAP = 480
 const FLAP_MS = 1000
+/** Long enough for the envelope to settle and be read, short enough not to stall. */
+const AUTO_BREAK_MS = 1500
 
 /**
- * A sealed envelope. It rises into the frame on arrival; breaking the wax
- * depresses the seal, cracks it, and swings the flap open — at which point
- * `onOpened` lets the caller slide the letter out.
+ * A sealed envelope. It rises into the frame on arrival, and the wax breaks
+ * itself a beat and a half later: the seal depresses, cracks, and the flap
+ * swings open, at which point `onOpened` lets the caller slide the letter out.
+ *
+ * Pressing the seal does the same thing immediately, for anyone impatient.
  */
 export function Envelope({
   recipient,
@@ -22,20 +26,32 @@ export function Envelope({
 }) {
   const reduced = useReducedMotion()
   const [phase, setPhase] = useState('sealed') // sealed → cracking → open
+  const broken = useRef(false)
 
-  const open = () => {
-    if (phase !== 'sealed') return
+  const open = useCallback(() => {
+    // A ref, not the phase: the timer and an eager tap can arrive together.
+    if (broken.current) return
+    broken.current = true
+
     unlockAudio()
     play('wax')
     setPhase('cracking')
 
-    window.setTimeout(() => {
-      play('envelope')
-      setPhase('open')
-    }, reduced ? 120 : CRACK_TO_FLAP)
+    window.setTimeout(
+      () => {
+        play('envelope')
+        setPhase('open')
+      },
+      reduced ? 120 : CRACK_TO_FLAP,
+    )
 
     window.setTimeout(() => onOpened?.(), reduced ? 300 : CRACK_TO_FLAP + FLAP_MS * 0.72)
-  }
+  }, [reduced, onOpened])
+
+  useEffect(() => {
+    const timer = window.setTimeout(open, AUTO_BREAK_MS)
+    return () => window.clearTimeout(timer)
+  }, [open])
 
   const cracked = phase !== 'sealed'
   const flapOpen = phase === 'open'
@@ -118,15 +134,7 @@ export function Envelope({
         />
       </div>
 
-      {!cracked && (
-        <motion.p
-          className="kicker mt-4 text-[0.55rem] text-paper/35"
-          animate={reduced ? undefined : { opacity: [0.35, 0.8, 0.35] }}
-          transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-        >
-          Break the seal
-        </motion.p>
-      )}
+      {/* No "break the seal" prompt any more: the wax gives way on its own. */}
     </motion.div>
   )
 }
