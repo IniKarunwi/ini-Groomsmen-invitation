@@ -127,7 +127,8 @@ export const groomsmen = [
     name: 'Gbenga',
     role: 'Groomsman',
     accepted: false,
-    photo: '',
+    photo: '/photos/gbenga.jpeg',
+    photoPosition: '50% 34%',
     photoCaption: '',
     letter: [
       'You’ve become one of those people I genuinely thank God for.',
