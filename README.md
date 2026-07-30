@@ -25,8 +25,8 @@ Every groomsman has his own path — the slug in the URL selects which letter is
 rendered. Everything else in the experience is identical.
 
 ```
-/jacob      /michael      /kelvin      /ayo
-/david      /samuel       /tobi        /          ← general invitation
+/jacob      /davies       /kelvin      /ayo
+/kola       /gbenga       /michael     /          ← general invitation
 ```
 
 An unrecognised slug lands on an in-character "that name is not on the list"

@@ -30,8 +30,11 @@ export function PersonalLetter({ groomsman, onAdvance }) {
   }, [opened, reduced])
 
   // The paper reveals paragraph by paragraph; the button waits for the last one.
+  // Longer letters use a slightly tighter cadence so the final paragraph is not
+  // still arriving a quarter of a minute after the paper opened.
   const paragraphs = groomsman.letter
-  const readingDelay = reduced ? 0.4 : 1.4 + paragraphs.length * 0.55
+  const stagger = paragraphs.length > 9 ? 0.34 : 0.5
+  const readingDelay = reduced ? 0.4 : 1.2 + paragraphs.length * stagger
 
   useEffect(() => {
     if (!opened) return undefined
@@ -65,7 +68,7 @@ export function PersonalLetter({ groomsman, onAdvance }) {
         <AnimatePresence>
           {opened && (
             <motion.div ref={letterRef} className="mt-12 scroll-mt-16" exit={{ opacity: 0 }}>
-              <Letter stagger={0.55}>
+              <Letter stagger={stagger}>
                 <Reveal className="mb-6 text-right text-[0.8rem] italic text-ink/55">
                   {wedding.monthYear}
                 </Reveal>
