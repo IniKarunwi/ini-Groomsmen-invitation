@@ -7,14 +7,18 @@
  * calmly, one paragraph at a time. The greeting ("Jacob,") and the sign-off
  * are rendered by the letter itself, so they are not repeated here.
  *
- * `photo` is the picture mounted in the frame beside his letter and filed in
- * his dossier. Drop a file in public/photos/ and point at it. Left empty, the
- * frame shows an empty plate rather than a gap.
+ * Two pictures per man, both in public/photos/:
  *
- * `photoPosition` anchors the crop (a CSS object-position). The pictures are
- * candid and the faces sit at a different height in each, so nudge the second
- * value up or down if someone is being cut off — '50% 30%' crops from higher
- * in the frame, '50% 65%' from lower.
+ *   `photo`      the one with the groom in it, mounted in the frame beside his
+ *                letter. Left empty, the frame shows an empty plate.
+ *   `filePhoto`  a solo portrait, filed in his dossier on the ACCEPTED screen.
+ *                Falls back to `photo` if it is not set.
+ *
+ * The `…Position` fields anchor each crop (a CSS object-position). The frame is
+ * 4:5 and the dossier photo is square, and these are candid pictures where the
+ * faces sit at a different height in every one — so nudge the second value if
+ * someone is being cut off: '50% 30%' crops from higher in the picture, '50%
+ * 65%' from lower.
  */
 
 export const groomsmen = [
@@ -25,6 +29,8 @@ export const groomsmen = [
     accepted: false,
     photo: '/photos/jacob.jpeg',
     photoPosition: '50% 45%',
+    filePhoto: '/photos/jacob-solo.jpeg',
+    filePhotoPosition: '50% 22%',
     photoCaption: '',
     letter: [
       'It’s amazing how friendships grow in ways you never expect.',
@@ -44,6 +50,8 @@ export const groomsmen = [
     accepted: false,
     photo: '/photos/davies.jpeg',
     photoPosition: '50% 40%',
+    filePhoto: '/photos/davies-solo.jpeg',
+    filePhotoPosition: '50% 13%',
     photoCaption: '',
     letter: [
       'I don’t think we’ve known each other long enough for people to keep calling us twins… yet somehow they still do.',
@@ -63,6 +71,8 @@ export const groomsmen = [
     accepted: false,
     photo: '/photos/kelvin.jpeg',
     photoPosition: '50% 58%',
+    filePhoto: '/photos/kelvin-solo.jpeg',
+    filePhotoPosition: '50% 10%',
     photoCaption: '',
     letter: [
       'My guy.',
@@ -84,6 +94,8 @@ export const groomsmen = [
     accepted: false,
     photo: '/photos/ayo.jpeg',
     photoPosition: '50% 42%',
+    filePhoto: '/photos/ayo-solo.jpeg',
+    filePhotoPosition: '50% 15%',
     photoCaption: '',
     letter: [
       'Bro…',
@@ -107,6 +119,8 @@ export const groomsmen = [
     accepted: false,
     photo: '/photos/kola.jpeg',
     photoPosition: '50% 38%',
+    filePhoto: '/photos/kola-solo.jpeg',
+    filePhotoPosition: '50% 24%',
     photoCaption: '',
     letter: [
       'It’s funny that I’m writing this just a day after you decided to pay for my after-party jacket.',
@@ -129,6 +143,8 @@ export const groomsmen = [
     accepted: false,
     photo: '/photos/gbenga.jpeg',
     photoPosition: '50% 34%',
+    filePhoto: '/photos/gbenga-solo.jpeg',
+    filePhotoPosition: '30% 40%',
     photoCaption: '',
     letter: [
       'You’ve become one of those people I genuinely thank God for.',
@@ -151,6 +167,8 @@ export const groomsmen = [
     accepted: false,
     photo: '/photos/michael.jpeg',
     photoPosition: '50% 32%',
+    filePhoto: '/photos/michael-solo.jpeg',
+    filePhotoPosition: '50% 8%',
     photoCaption: '',
     letter: [
       'Pastor.',

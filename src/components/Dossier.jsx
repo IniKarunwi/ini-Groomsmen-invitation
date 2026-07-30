@@ -20,6 +20,10 @@ export function Dossier({ groomsman, onAdvance }) {
   const paper = useAnimationControls()
   const [stamped, setStamped] = useState(false)
 
+  const filePhoto = groomsman.filePhoto || groomsman.photo
+  const filePhotoPosition =
+    (groomsman.filePhoto ? groomsman.filePhotoPosition : groomsman.photoPosition) || '50% 40%'
+
   const handleImpact = useCallback(() => {
     setStamped(true)
     if (reduced) return
@@ -90,17 +94,16 @@ export function Dossier({ groomsman, onAdvance }) {
                 </div>
 
                 <div className="flex gap-5 px-4 py-5 sm:px-5">
-                  {/* The same photograph that is mounted beside his letter,
-                      shown as filed — not desaturated, so it plainly reads as
-                      the picture he was chosen with. */}
+                  {/* A file photograph is of one man: his solo portrait, falling
+                      back to the picture beside his letter if none is filed. */}
                   <div className="shrink-0">
-                    {groomsman.photo ? (
+                    {filePhoto ? (
                       <LazyImage
-                        src={groomsman.photo}
+                        src={filePhoto}
                         alt={`${groomsman.name}, official file photograph`}
                         wrapperClassName="h-20 w-20 border border-gold/50 sm:h-24 sm:w-24"
                         className="h-full w-full object-cover"
-                        style={{ objectPosition: groomsman.photoPosition || '50% 45%' }}
+                        style={{ objectPosition: filePhotoPosition }}
                       />
                     ) : (
                       <div className="flex h-20 w-20 items-center justify-center border border-gold/40 bg-gold/[0.06] sm:h-24 sm:w-24">

@@ -91,17 +91,22 @@ of degrees off square, with a caption plate underneath. Until a picture is
 filed the frame shows an empty plate reading "Photograph to follow", so the
 layout never shifts when you add one.
 
-1. Drop the image into `public/photos/`, named for his slug — `jacob.jpeg`
-2. Point `photo` at it — `'/photos/jacob.jpeg'` — and optionally set `photoCaption`
+Each man has **two** pictures, both in `public/photos/`, named for his slug:
 
-The same picture is filed in his dossier on the ACCEPTED screen, so one field
-covers both.
+| field | file | where it appears |
+|---|---|---|
+| `photo` | `jacob.jpeg` | the frame beside his letter — the one with the groom in it |
+| `filePhoto` | `jacob-solo.jpeg` | his dossier on the ACCEPTED screen — a solo portrait |
 
-**If someone is being cut off**, nudge `photoPosition`. It is a CSS
-`object-position`, and only the second value usually matters: `'50% 30%'` crops
-from higher in the picture, `'50% 65%'` from lower. The frame is 4:5 and the
-dossier photo is square, so wide photographs lose their edges — the value is
-set per man because the faces sit at a different height in each.
+`filePhoto` falls back to `photo` if it isn't set, and an empty `photo` leaves
+the frame showing its "Photograph to follow" plate.
+
+**If someone is being cut off**, nudge `photoPosition` / `filePhotoPosition`.
+They are CSS `object-position` values, and usually only the second number
+matters: `'50% 20%'` crops from higher in the picture, `'50% 60%'` from lower.
+The frame is 4:5 and the file photo is square, so every picture loses
+something — the values are set per man because the faces sit at a different
+height in each.
 
 On a wide screen the frame sits beside the letter and stays with the reader as
 they scroll; on a phone it is mounted below the last paragraph, enclosed with
