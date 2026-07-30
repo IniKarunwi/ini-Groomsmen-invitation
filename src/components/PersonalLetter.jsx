@@ -133,6 +133,7 @@ export function PersonalLetter({ groomsman, onAccept }) {
                     src={groomsman.photo}
                     alt={`${groomsman.name} and ${wedding.groom}`}
                     caption={groomsman.photoCaption}
+                    position={groomsman.photoPosition}
                     delay={0.5}
                     tilt={2}
                   />

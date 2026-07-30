@@ -48,6 +48,7 @@ export function PhotoFrame({
   src,
   alt,
   caption,
+  position = '50% 45%',
   label = `File #${wedding.fileRef}`,
   tilt = -1.8,
   delay = 0,
@@ -79,6 +80,7 @@ export function PhotoFrame({
               alt={alt}
               wrapperClassName="absolute inset-0 h-full w-full"
               className="h-full w-full object-cover"
+              style={{ objectPosition: position }}
             />
           ) : (
             <PendingPlate />

@@ -91,11 +91,17 @@ of degrees off square, with a caption plate underneath. Until a picture is
 filed the frame shows an empty plate reading "Photograph to follow", so the
 layout never shifts when you add one.
 
-1. Drop the image into `public/photos/` (portrait crops suit the 4:5 window)
-2. Point `photo` at it — `'/photos/jacob.jpg'` — and optionally set `photoCaption`
+1. Drop the image into `public/photos/`, named for his slug — `jacob.jpeg`
+2. Point `photo` at it — `'/photos/jacob.jpeg'` — and optionally set `photoCaption`
 
 The same picture is filed in his dossier on the ACCEPTED screen, so one field
 covers both.
+
+**If someone is being cut off**, nudge `photoPosition`. It is a CSS
+`object-position`, and only the second value usually matters: `'50% 30%'` crops
+from higher in the picture, `'50% 65%'` from lower. The frame is 4:5 and the
+dossier photo is square, so wide photographs lose their edges — the value is
+set per man because the faces sit at a different height in each.
 
 On a wide screen the frame sits beside the letter and stays with the reader as
 they scroll; on a phone it is mounted below the last paragraph, enclosed with

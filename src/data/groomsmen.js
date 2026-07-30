@@ -7,9 +7,14 @@
  * calmly, one paragraph at a time. The greeting ("Jacob,") and the sign-off
  * are rendered by the letter itself, so they are not repeated here.
  *
- * `photo` is the picture mounted in the frame beside his letter (and in his
- * dossier). Drop a file in public/ and point at it — '/photos/jacob.jpg'.
- * Left empty, the frame shows an empty plate rather than a gap.
+ * `photo` is the picture mounted in the frame beside his letter and filed in
+ * his dossier. Drop a file in public/photos/ and point at it. Left empty, the
+ * frame shows an empty plate rather than a gap.
+ *
+ * `photoPosition` anchors the crop (a CSS object-position). The pictures are
+ * candid and the faces sit at a different height in each, so nudge the second
+ * value up or down if someone is being cut off — '50% 30%' crops from higher
+ * in the frame, '50% 65%' from lower.
  */
 
 export const groomsmen = [
@@ -18,7 +23,8 @@ export const groomsmen = [
     name: 'Jacob',
     role: 'Best Man',
     accepted: false,
-    photo: '',
+    photo: '/photos/jacob.jpeg',
+    photoPosition: '50% 45%',
     photoCaption: '',
     letter: [
       'It’s amazing how friendships grow in ways you never expect.',
@@ -36,7 +42,8 @@ export const groomsmen = [
     name: 'Davies',
     role: 'Groomsman',
     accepted: false,
-    photo: '',
+    photo: '/photos/davies.jpeg',
+    photoPosition: '50% 40%',
     photoCaption: '',
     letter: [
       'I don’t think we’ve known each other long enough for people to keep calling us twins… yet somehow they still do.',
@@ -54,7 +61,8 @@ export const groomsmen = [
     name: 'Kelvin',
     role: 'Groomsman',
     accepted: false,
-    photo: '',
+    photo: '/photos/kelvin.jpeg',
+    photoPosition: '50% 58%',
     photoCaption: '',
     letter: [
       'My guy.',
@@ -74,7 +82,8 @@ export const groomsmen = [
     name: 'Ayo',
     role: 'Groomsman',
     accepted: false,
-    photo: '',
+    photo: '/photos/ayo.jpeg',
+    photoPosition: '50% 42%',
     photoCaption: '',
     letter: [
       'Bro…',
@@ -96,7 +105,8 @@ export const groomsmen = [
     name: 'Kola',
     role: 'Groomsman',
     accepted: false,
-    photo: '',
+    photo: '/photos/kola.jpeg',
+    photoPosition: '50% 38%',
     photoCaption: '',
     letter: [
       'It’s funny that I’m writing this just a day after you decided to pay for my after-party jacket.',
@@ -138,7 +148,8 @@ export const groomsmen = [
     name: 'Michael',
     role: 'Groomsman',
     accepted: false,
-    photo: '',
+    photo: '/photos/michael.jpeg',
+    photoPosition: '50% 32%',
     photoCaption: '',
     letter: [
       'Pastor.',

@@ -100,6 +100,7 @@ export function Dossier({ groomsman, onAdvance }) {
                         alt={`${groomsman.name}, official file photograph`}
                         wrapperClassName="h-20 w-20 border border-gold/50 sm:h-24 sm:w-24"
                         className="h-full w-full object-cover"
+                        style={{ objectPosition: groomsman.photoPosition || '50% 45%' }}
                       />
                     ) : (
                       <div className="flex h-20 w-20 items-center justify-center border border-gold/40 bg-gold/[0.06] sm:h-24 sm:w-24">
