@@ -54,11 +54,12 @@ Edit `src/data/groomsmen.js`. Each record is self-contained:
 }
 ```
 
-Everything else — the newspaper copy, the missions, the certificate wording,
-the date, the WhatsApp link — lives in `src/data/invitation.js`.
+`role` is not decoration: it sets the status line on the dossier and the rank on
+the certificate, so the best man's file reads `Official Best Man` while everyone
+else's reads `Official Groomsman`.
 
-**Before sending this out, set `wedding.whatsappUrl`** in
-`src/data/invitation.js` to the real group invite.
+Everything else — the newspaper copy, the missions, the certificate wording,
+the date, the WhatsApp group link — lives in `src/data/invitation.js`.
 
 ---
 

@@ -104,7 +104,7 @@ export function Certificate({ groomsman, onRestart }) {
               </p>
 
               <p className="mt-2 font-slab text-[1.05rem] font-bold uppercase tracking-[0.1em] text-ink sm:text-[1.2rem]">
-                {certificate.rank}
+                {certificate.rank(groomsman.role)}
               </p>
 
               <div className="mx-auto mt-8 grid max-w-xs grid-cols-2 gap-4 border-y border-ink/15 py-4">

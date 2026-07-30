@@ -12,8 +12,7 @@ export const wedding = {
   fileRef: 'INI-2026',
   operation: 'Operation Altar',
   agency: 'Brotherhood Intelligence Agency',
-  // Replace with the real group invite before sending this out.
-  whatsappUrl: 'https://chat.whatsapp.com/',
+  whatsappUrl: 'https://chat.whatsapp.com/CDKiHgb6fTeCpPQK41L5dK?s=cl&p=i&ilr=0',
 }
 
 export const newspaper = {
@@ -83,8 +82,10 @@ export const dossier = {
   title: 'Official Recruitment Notice',
   panelTitle: 'Official Dossier',
   ref: `REF: ${wedding.fileRef}`,
-  rows: [
-    { label: 'Status', value: 'Official Groomsman' },
+  // The status carries the man's own rank — "Official Best Man" for the one
+  // holding the ring, "Official Groomsman" for everyone else.
+  rows: (role = 'Groomsman') => [
+    { label: 'Status', value: `Official ${role}` },
     { label: 'Mission', value: 'Stand beside the Groom' },
     { label: 'Mission date', value: wedding.dateShort },
   ],
@@ -179,7 +180,7 @@ export const certificate = {
   agency: wedding.agency,
   title: 'Certificate of Brotherhood',
   citation: 'has been formally commissioned as an',
-  rank: 'Official Groomsman',
+  rank: (role = 'Groomsman') => `Official ${role}`,
   operationLabel: 'Operation',
   dateLabel: 'Date of Commission',
   clause:

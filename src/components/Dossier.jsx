@@ -106,7 +106,7 @@ export function Dossier({ groomsman, onAdvance }) {
                   </div>
 
                   <dl className="min-w-0 flex-1 space-y-3">
-                    {dossier.rows.map((row, i) => (
+                    {dossier.rows(groomsman.role).map((row, i) => (
                       <motion.div
                         key={row.label}
                         initial={{ opacity: 0, x: -12 }}
