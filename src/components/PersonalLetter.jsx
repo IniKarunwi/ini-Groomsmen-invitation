@@ -5,6 +5,7 @@ import { Envelope } from './Envelope'
 import { Letter, Reveal } from './Letter'
 import { Button } from './Button'
 import { Signature } from './Signature'
+import { PhotoFrame } from './PhotoFrame'
 import { wedding } from '../data/invitation'
 import { DUR, EASE } from '../lib/motion'
 
@@ -48,7 +49,7 @@ export function PersonalLetter({ groomsman, onAdvance }) {
       center={false}
       contentClassName="px-4 pb-16 pt-10 sm:px-6 sm:pt-14"
     >
-      <div className="mx-auto w-full max-w-reading">
+      <div className="mx-auto w-full max-w-reading lg:max-w-[54rem]">
         {/* The generous gap leaves room for the flap to swing up and open */}
         <motion.p
           className="kicker mb-24 text-center text-[0.55rem] text-gold/60"
@@ -59,15 +60,22 @@ export function PersonalLetter({ groomsman, onAdvance }) {
           A letter written for one man only
         </motion.p>
 
-        <Envelope
-          recipient={groomsman.name}
-          band="By hand — not to be forwarded"
-          onOpened={() => setOpened(true)}
-        />
+        <div className="mx-auto max-w-reading">
+          <Envelope
+            recipient={groomsman.name}
+            band="By hand — not to be forwarded"
+            onOpened={() => setOpened(true)}
+          />
+        </div>
 
         <AnimatePresence>
           {opened && (
             <motion.div ref={letterRef} className="mt-12 scroll-mt-16" exit={{ opacity: 0 }}>
+              {/* On a wide screen the photograph sits beside the letter and
+                  travels with the reader; on a phone it is enclosed with it,
+                  mounted below the last paragraph. */}
+              <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_16rem] lg:items-start lg:gap-10">
+                <div className="lg:order-1">
               <Letter stagger={stagger}>
                 <Reveal className="mb-6 text-right text-[0.8rem] italic text-ink/55">
                   {wedding.monthYear}
@@ -101,9 +109,21 @@ export function PersonalLetter({ groomsman, onAdvance }) {
                   {groomsman.role} · {wedding.operation}
                 </Reveal>
               </Letter>
+                </div>
+
+                <aside className="mt-10 lg:order-2 lg:mt-2 lg:sticky lg:top-24">
+                  <PhotoFrame
+                    src={groomsman.photo}
+                    alt={`${groomsman.name} and Ini`}
+                    caption={groomsman.photoCaption}
+                    delay={0.5}
+                    tilt={2}
+                  />
+                </aside>
+              </div>
 
               <motion.div
-                className="mt-8"
+                className="mt-8 lg:mx-auto lg:max-w-reading"
                 initial={{ opacity: 0, y: 26 }}
                 animate={read ? { opacity: 1, y: 0 } : { opacity: 0, y: 26 }}
                 transition={{ duration: DUR.slow, ease: EASE }}

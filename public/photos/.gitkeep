@@ -1,0 +1,2 @@
+Photographs go here. Point a groomsman's `photo` field at '/photos/<file>.jpg'
+(see src/data/groomsmen.js), and `wedding.photo` for the opening letter.

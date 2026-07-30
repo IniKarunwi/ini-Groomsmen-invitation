@@ -47,12 +47,29 @@ Edit `src/data/groomsmen.js`. Each record is self-contained:
   name: 'Jacob',            // appears on the envelope, letter and certificate
   role: 'Best Man',         // printed under the signature
   accepted: false,          // initial state; a real acceptance is stored locally
-  photo: '/jacob.jpg',      // optional — replaces the "?" in the dossier
+  photo: '/photos/jacob.jpg',   // the frame beside his letter, and his dossier photo
+  photoCaption: 'Lagos, 2019',  // optional line under the frame
   letter: [                 // one string per paragraph; they reveal in sequence
     'There is no version of this day that makes sense without you…',
   ],
 }
 ```
+
+### Adding the pictures
+
+Each letter has a photograph mounted beside it — taped down, a couple of degrees
+off square, with a caption plate underneath. Until a picture is filed the frame
+shows an empty plate reading "Photograph to follow", so the layout never shifts
+when you add one.
+
+1. Drop the image into `public/photos/` (portrait crops suit the 4:5 window best)
+2. Point `photo` at it — `'/photos/jacob.jpg'` — and optionally set `photoCaption`
+3. The photograph beside the **opening** letter is `wedding.photo` in
+   `src/data/invitation.js`, with `photoAlt` and `photoCaption` alongside it
+
+On a wide screen the frame sits beside the letter and stays with the reader as
+they scroll; on a phone it is mounted below the last paragraph, enclosed with
+the letter. Images are lazy-loaded and resolve out of a blur.
 
 `role` is not decoration: it sets the status line on the dossier and the rank on
 the certificate, so the best man's file reads `Official Best Man` while everyone
@@ -83,6 +100,7 @@ src/
     LoadingScreen.jsx scene 2 — typewriter, waveform, tap to continue
     Envelope.jsx      the sealed envelope (scenes 3 and 6)
     Letter.jsx        paper that rises, unfolds and then reveals its ink
+    PhotoFrame.jsx    the taped photograph mounted beside a letter
     OpeningLetter.jsx scene 3 — the invitation and the question
     Dossier.jsx       scene 4 — the ACCEPTED stamp coming down
     MissionCard.jsx   one classified file; folder-unfold accordion

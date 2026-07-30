@@ -81,7 +81,7 @@ export function MissionCard({ mission, open, onToggle, checked = [], onCheck }) 
 
   return (
     <motion.article
-      className="paper-surface relative overflow-hidden shadow-paper"
+      className="paper-surface relative overflow-hidden shadow-sheet"
       initial={{ opacity: 0, y: 34 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.18 }}

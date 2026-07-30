@@ -38,7 +38,10 @@ export default {
       },
       boxShadow: {
         press: 'inset 0 2px 6px rgba(0,0,0,0.45)',
-        paper:
+        // Named "sheet", not "paper": a `shadow-paper` utility would collide
+        // with the `paper` colour and be resolved as a shadow *colour*,
+        // painting the shadow itself #F6F0E4.
+        sheet:
           '0 1px 2px rgba(0,0,0,0.25), 0 18px 40px -12px rgba(0,0,0,0.55), 0 40px 90px -30px rgba(0,0,0,0.7)',
         goldGlow: '0 0 0 1px rgba(176,138,46,0.6), 0 0 26px -4px rgba(176,138,46,0.45)',
       },

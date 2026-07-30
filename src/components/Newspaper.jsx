@@ -289,7 +289,7 @@ export function Newspaper({ onAdvance }) {
             </motion.div>
           </div>
         ) : (
-          <div className="shadow-paper">{sheet}</div>
+          <div className="shadow-sheet">{sheet}</div>
         )}
       </motion.div>
     </motion.section>

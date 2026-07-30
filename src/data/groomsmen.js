@@ -6,6 +6,10 @@
  * `letter` is an array of paragraphs so the personal letter can reveal
  * calmly, one paragraph at a time. The greeting ("Jacob,") and the sign-off
  * are rendered by the letter itself, so they are not repeated here.
+ *
+ * `photo` is the picture mounted in the frame beside his letter (and in his
+ * dossier). Drop a file in public/ and point at it — '/photos/jacob.jpg'.
+ * Left empty, the frame shows an empty plate rather than a gap.
  */
 
 export const groomsmen = [
@@ -14,6 +18,8 @@ export const groomsmen = [
     name: 'Jacob',
     role: 'Best Man',
     accepted: false,
+    photo: '',
+    photoCaption: '',
     letter: [
       'It’s amazing how friendships grow in ways you never expect.',
       'I still remember one of our earliest conversations. You were asking why I served so hard in Passages, and I don’t think either of us imagined that years later we’d become the kind of friends we are today.',
@@ -30,6 +36,8 @@ export const groomsmen = [
     name: 'Davies',
     role: 'Groomsman',
     accepted: false,
+    photo: '',
+    photoCaption: '',
     letter: [
       'I don’t think we’ve known each other long enough for people to keep calling us twins… yet somehow they still do.',
       'I still remember when you came back from Lagos carrying yourself like one deeply spiritual pastor. I honestly wondered, “Who exactly is this guy?” Little did I know that we’d end up becoming such close friends.',
@@ -46,6 +54,8 @@ export const groomsmen = [
     name: 'Kelvin',
     role: 'Groomsman',
     accepted: false,
+    photo: '',
+    photoCaption: '',
     letter: [
       'My guy.',
       'It’s been a long journey, hasn’t it?',
@@ -64,6 +74,8 @@ export const groomsmen = [
     name: 'Ayo',
     role: 'Groomsman',
     accepted: false,
+    photo: '',
+    photoCaption: '',
     letter: [
       'Bro…',
       'You probably don’t realize just how much you’ve shaped the direction of my life.',
@@ -84,6 +96,8 @@ export const groomsmen = [
     name: 'Kola',
     role: 'Groomsman',
     accepted: false,
+    photo: '',
+    photoCaption: '',
     letter: [
       'It’s funny that I’m writing this just a day after you decided to pay for my after-party jacket.',
       'Honestly… that’s just who you are.',
@@ -103,6 +117,8 @@ export const groomsmen = [
     name: 'Gbenga',
     role: 'Groomsman',
     accepted: false,
+    photo: '',
+    photoCaption: '',
     letter: [
       'You’ve become one of those people I genuinely thank God for.',
       'Every time I hear you share your story, I’m reminded that God has been intentionally shaping your life for something significant. I have no doubt He’s taking you to places far greater than either of us can currently imagine.',
@@ -122,6 +138,8 @@ export const groomsmen = [
     name: 'Michael',
     role: 'Groomsman',
     accepted: false,
+    photo: '',
+    photoCaption: '',
     letter: [
       'Pastor.',
       'Brother.',
@@ -149,6 +167,8 @@ export const genericGroomsman = {
   name: 'The Chosen',
   role: 'Groomsman',
   accepted: false,
+  photo: '',
+  photoCaption: '',
   letter: [
     'Whoever is reading this: you were not selected at random, and this page was not sent widely.',
     'Of all the men I know, only a handful were ever going to be asked to stand beside me on this day. You are reading this because you are one of them.',

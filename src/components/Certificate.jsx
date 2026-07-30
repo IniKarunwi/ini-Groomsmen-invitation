@@ -60,7 +60,7 @@ export function Certificate({ groomsman, onRestart }) {
 
         {/* The certificate */}
         <motion.div
-          className="paper-surface relative overflow-hidden shadow-paper"
+          className="paper-surface relative overflow-hidden shadow-sheet"
           initial={reduced ? { opacity: 0 } : { y: 110, opacity: 0, filter: 'blur(6px)' }}
           animate={reduced ? { opacity: 1 } : { y: 0, opacity: 1, filter: 'blur(0px)' }}
           transition={{ duration: DUR.long, ease: EASE }}

@@ -5,6 +5,7 @@ import { Envelope } from './Envelope'
 import { Letter, Reveal } from './Letter'
 import { Button } from './Button'
 import { Signature } from './Signature'
+import { PhotoFrame } from './PhotoFrame'
 import { openingLetter, wedding } from '../data/invitation'
 import { DUR, EASE } from '../lib/motion'
 import { play } from '../lib/audio'
@@ -50,8 +51,14 @@ export function OpeningLetter({ recipient, onAccept }) {
       center={false}
       contentClassName="px-4 pb-16 pt-10 sm:px-6 sm:pt-14"
     >
-      <div className="mx-auto w-full max-w-reading">
-        <Envelope recipient={recipient} band={openingLetter.envelopeBand} onOpened={() => setOpened(true)} />
+      <div className="mx-auto w-full max-w-reading lg:max-w-[54rem]">
+        <div className="mx-auto max-w-reading">
+          <Envelope
+            recipient={recipient}
+            band={openingLetter.envelopeBand}
+            onOpened={() => setOpened(true)}
+          />
+        </div>
 
         <AnimatePresence>
           {opened && (
@@ -61,6 +68,8 @@ export function OpeningLetter({ recipient, onAccept }) {
               initial={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
+              <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_16rem] lg:items-start lg:gap-10">
+                <div className="lg:order-1">
               <Letter>
                 <Reveal className="mb-6 text-right text-[0.8rem] italic text-ink/55">
                   {openingLetter.date}
@@ -128,10 +137,22 @@ export function OpeningLetter({ recipient, onAccept }) {
                   <Signature name={wedding.groom} />
                 </Reveal>
               </Letter>
+                </div>
+
+                <aside className="mt-10 lg:order-2 lg:mt-2 lg:sticky lg:top-24">
+                  <PhotoFrame
+                    src={wedding.photo}
+                    alt={wedding.photoAlt}
+                    caption={wedding.photoCaption}
+                    delay={0.5}
+                    tilt={-2.2}
+                  />
+                </aside>
+              </div>
 
               {/* ---------- The question ---------- */}
               <motion.div
-                className="relative mt-8"
+                className="relative mt-8 lg:mx-auto lg:max-w-reading"
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: DUR.slow, delay: reduced ? 0.2 : 2.6, ease: EASE }}

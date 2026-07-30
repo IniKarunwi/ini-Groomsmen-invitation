@@ -45,7 +45,7 @@ export function Letter({
   return (
     <div className={`w-full [perspective:1500px] ${className}`}>
       <motion.article
-        className="paper-surface relative overflow-hidden shadow-paper"
+        className="paper-surface relative overflow-hidden shadow-sheet"
         style={{ transformOrigin: 'top center' }}
         initial={
           reduced

@@ -58,7 +58,7 @@ export function Dossier({ groomsman, onAdvance }) {
           transition={{ duration: DUR.slow, ease: EASE }}
         >
           <motion.div animate={paper}>
-            <div className="paper-aged relative overflow-hidden px-5 py-8 shadow-paper sm:px-9 sm:py-10">
+            <div className="paper-aged relative overflow-hidden px-5 py-8 shadow-sheet sm:px-9 sm:py-10">
               <PaperGrain opacity={0.08} />
 
               {/* Stamp */}

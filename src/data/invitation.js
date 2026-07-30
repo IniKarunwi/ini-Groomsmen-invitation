@@ -13,6 +13,12 @@ export const wedding = {
   operation: 'Operation Altar',
   agency: 'Brotherhood Intelligence Agency',
   whatsappUrl: 'https://chat.whatsapp.com/CDKiHgb6fTeCpPQK41L5dK?s=cl&p=i&ilr=0',
+  // The photograph mounted beside the opening letter. Drop a file in public/
+  // and point at it — e.g. '/photos/ini-and-princess.jpg'. Left empty, the
+  // frame shows an empty plate instead of a gap.
+  photo: '',
+  photoAlt: 'Ini and Princess',
+  photoCaption: '',
 }
 
 export const newspaper = {
