@@ -1,0 +1,297 @@
+import { useState } from 'react'
+import { motion, useReducedMotion } from 'framer-motion'
+import { Button } from './Button'
+import { PaperGrain } from './effects/PaperGrain'
+import { DustParticles } from './effects/DustParticles'
+import { WaxSeal } from './effects/WaxSeal'
+import { BrotherhoodRow } from './illustrations'
+import { newspaper, wedding } from '../data/invitation'
+import { DUR, EASE } from '../lib/motion'
+import { play, unlockAudio } from '../lib/audio'
+
+const FOLD_MS = 1500
+
+function ColumnHeading({ children }) {
+  return (
+    <h2 className="column-heading mb-2 border-b border-ink/70 pb-1 text-ink">{children}</h2>
+  )
+}
+
+/** The five register bars printed at the top of the sheet. */
+function RegisterBars() {
+  return (
+    <span aria-hidden="true" className="flex items-end gap-[3px]">
+      {[9, 12, 8, 12, 9].map((height, i) => (
+        <span key={i} className="w-[3px] bg-ink/80" style={{ height }} />
+      ))}
+    </span>
+  )
+}
+
+/**
+ * The printed page itself. Rendered whole while the visitor is reading, then
+ * rendered twice — clipped to each half — for the fold.
+ */
+function Sheet({ onApply, applying }) {
+  return (
+    <div className="relative paper-aged newsprint-lines px-5 pb-14 pt-4 sm:px-10 sm:pb-16 sm:pt-6 lg:px-14">
+      <PaperGrain opacity={0.09} />
+
+      <div className="relative mx-auto max-w-broadsheet">
+        {/* ---------- Masthead ---------- */}
+        <header>
+          <div className="flex items-center justify-between text-[0.6rem] font-medium uppercase tracking-[0.2em] text-ink/85">
+            <span>{newspaper.established}</span>
+            <RegisterBars />
+            <span>{newspaper.volume}</span>
+          </div>
+
+          <div className="rule-double mt-2" />
+
+          <h1 className="py-3 text-center font-body text-[0.9rem] font-bold uppercase leading-none tracking-[0.34em] text-ink sm:text-[1.35rem] sm:tracking-[0.42em]">
+            {newspaper.masthead}
+          </h1>
+
+          <div className="rule-double" />
+
+          <div className="flex items-center justify-between py-2 text-[0.62rem] text-ink/80 sm:text-[0.72rem]">
+            <span>{wedding.dateLong}</span>
+            <span>{newspaper.price}</span>
+          </div>
+
+          <div className="rule-thin" />
+        </header>
+
+        <p className="kicker py-5 text-center text-[0.58rem] text-ink/70 sm:py-7 sm:text-[0.68rem]">
+          {newspaper.kicker}
+        </p>
+
+        {/* ---------- Three columns ---------- */}
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,2.7fr)_minmax(0,1fr)] lg:gap-0">
+          {/* Left column */}
+          <div className="border-t border-ink/25 pt-5 lg:border-t-0 lg:border-r lg:border-ink/25 lg:pr-7 lg:pt-0">
+            <section>
+              <ColumnHeading>Requirements</ColumnHeading>
+              <p className="text-[0.84rem] leading-[1.75] text-ink/90">{newspaper.requirements}</p>
+            </section>
+
+            <section className="mt-7">
+              <ColumnHeading>Inside this issue</ColumnHeading>
+              <ul className="space-y-2">
+                {newspaper.contents.map((item) => (
+                  <li key={item.label} className="flex items-baseline gap-2 text-[0.82rem] text-ink/90">
+                    <span className="whitespace-nowrap">{item.label}</span>
+                    <span aria-hidden="true" className="leader-dots flex-1 translate-y-[-0.2em]" />
+                    <span className="whitespace-nowrap tabular-nums">{item.page}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          </div>
+
+          {/* Centre column */}
+          <div className="lg:px-8">
+            <h2 className="headline-press text-center font-slab text-[clamp(3.4rem,15vw,8.5rem)] font-black uppercase leading-[0.84] tracking-[-0.02em] text-ink">
+              {newspaper.headline.map((line) => (
+                <span key={line} className="block">
+                  {line}
+                </span>
+              ))}
+            </h2>
+
+            <div className="rule-heavy mt-5" />
+
+            <p className="mx-auto mt-5 max-w-xl text-balance text-center font-slab text-[0.98rem] font-bold leading-snug text-ink sm:text-[1.12rem]">
+              {newspaper.deck}
+            </p>
+
+            {/* Photograph */}
+            <figure className="mt-7">
+              <div
+                className="relative flex h-[190px] items-end justify-center overflow-hidden px-4 pb-8 sm:h-[250px]"
+                style={{
+                  background:
+                    'linear-gradient(165deg, #2a2521 0%, #1a1613 55%, #221d19 100%)',
+                  boxShadow: 'inset 0 0 60px rgba(0,0,0,0.65)',
+                }}
+              >
+                <DustParticles count={10} tone="rgba(246,240,228,0.28)" />
+                <BrotherhoodRow count={7} className="h-[60%] w-full max-w-2xl opacity-90" />
+                <span
+                  aria-hidden="true"
+                  className="absolute bottom-6 left-1/2 h-px w-[78%] -translate-x-1/2 bg-paper/12"
+                />
+              </div>
+              <figcaption className="mt-2 text-center text-[0.66rem] leading-relaxed text-ink/65">
+                {newspaper.photoCaption}
+              </figcaption>
+            </figure>
+
+            <div className="mt-6">
+              <Button
+                variant="press"
+                size="lg"
+                full
+                onClick={onApply}
+                disabled={applying}
+                className="justify-center"
+              >
+                {newspaper.cta}
+              </Button>
+            </div>
+          </div>
+
+          {/* Right column */}
+          <div className="border-t border-ink/25 pt-5 lg:border-t-0 lg:border-l lg:border-ink/25 lg:pl-7 lg:pt-0">
+            <section>
+              <ColumnHeading>Duties</ColumnHeading>
+              <p className="text-[0.84rem] leading-[1.75] text-ink/90">{newspaper.duties}</p>
+            </section>
+
+            <div className="my-7 flex justify-center">
+              <WaxSeal
+                size={78}
+                initial={wedding.initial}
+                label={`Seal of ${wedding.groom}`}
+                glow={false}
+                labelClassName="text-ink/45"
+              />
+            </div>
+
+            <section>
+              <ColumnHeading>From the editor</ColumnHeading>
+              <p className="text-[0.84rem] leading-[1.75] text-ink/90">{newspaper.editor}</p>
+            </section>
+          </div>
+        </div>
+
+        {/* ---------- Footer ---------- */}
+        <footer className="relative mt-12">
+          <div className="rule-double" />
+          <div className="flex items-end justify-between gap-4 pt-3">
+            <p className="max-w-md text-[0.58rem] uppercase leading-relaxed tracking-[0.18em] text-ink/55">
+              {newspaper.footer}
+            </p>
+            <span
+              aria-hidden="true"
+              className="shrink-0 -rotate-[7deg] border-2 border-wax/60 px-3 py-1 text-[0.6rem] font-semibold uppercase tracking-[0.28em] text-wax/70 sm:px-4 sm:text-[0.68rem]"
+            >
+              Confidential
+            </span>
+          </div>
+        </footer>
+      </div>
+    </div>
+  )
+}
+
+/**
+ * Screen 1 — the front page.
+ *
+ * Pressing "Applications now open" folds the sheet inward from the centre
+ * while the camera pushes into the headline, which becomes the loading screen.
+ */
+export function Newspaper({ onAdvance }) {
+  const reduced = useReducedMotion()
+  const [folding, setFolding] = useState(false)
+
+  const handleApply = () => {
+    if (folding) return
+    unlockAudio()
+    play('fold')
+    setFolding(true)
+    window.setTimeout(() => onAdvance(), reduced ? 500 : FOLD_MS)
+  }
+
+  const sheet = <Sheet onApply={handleApply} applying={folding} />
+
+  const halfTransition = { duration: FOLD_MS / 1000, ease: EASE }
+
+  return (
+    <motion.section
+      className="relative min-h-[100svh] overflow-hidden bg-ink px-2 py-3 sm:px-6 sm:py-8"
+      initial={{ opacity: 0, scale: 1.03 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: DUR.long, ease: EASE }}
+    >
+      <DustParticles count={14} className="fixed z-0" />
+
+      {/* The headline the camera pushes into as the page folds away */}
+      {folding && !reduced && (
+        <motion.div
+          aria-hidden="true"
+          className="pointer-events-none fixed inset-0 z-0 flex items-center justify-center"
+          initial={{ opacity: 0, scale: 0.72 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: FOLD_MS / 1000, ease: EASE }}
+        >
+          <span className="text-center font-slab text-[clamp(3.4rem,15vw,8.5rem)] font-black uppercase leading-[0.84] tracking-[-0.02em] text-paper/95">
+            {newspaper.headline.map((line) => (
+              <span key={line} className="block">
+                {line}
+              </span>
+            ))}
+          </span>
+        </motion.div>
+      )}
+
+      <motion.div
+        className="relative z-10 mx-auto max-w-[100rem] [perspective:2000px]"
+        animate={
+          folding && !reduced
+            ? { scale: 1.16, y: -18, filter: 'blur(2px)' }
+            : { scale: 1, y: 0, filter: 'blur(0px)' }
+        }
+        transition={halfTransition}
+        style={{ boxShadow: folding ? 'none' : undefined }}
+      >
+        {folding ? (
+          /* Two clipped copies of the page, hinged at the crease. Hidden from
+             assistive tech: it is the same sheet, mid-transition. */
+          <div className="flex preserve-3d" aria-hidden="true">
+            {/* Left leaf */}
+            <motion.div
+              className="w-1/2 origin-right overflow-hidden preserve-3d backface-hidden"
+              initial={{ rotateY: 0 }}
+              animate={{ rotateY: -86 }}
+              transition={halfTransition}
+            >
+              <div className="relative w-[200%]">
+                {sheet}
+                {/* The outer edge swings away from the light as the leaf turns */}
+                <motion.span
+                  aria-hidden="true"
+                  className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/40 to-transparent"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 0.9 }}
+                  transition={halfTransition}
+                />
+              </div>
+            </motion.div>
+
+            {/* Right leaf */}
+            <motion.div
+              className="w-1/2 origin-left overflow-hidden preserve-3d backface-hidden"
+              initial={{ rotateY: 0 }}
+              animate={{ rotateY: 86 }}
+              transition={halfTransition}
+            >
+              <div className="relative w-[200%] -translate-x-1/2">
+                {sheet}
+                <motion.span
+                  aria-hidden="true"
+                  className="absolute inset-0 bg-gradient-to-l from-black/90 via-black/40 to-transparent"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 0.9 }}
+                  transition={halfTransition}
+                />
+              </div>
+            </motion.div>
+          </div>
+        ) : (
+          <div className="shadow-paper">{sheet}</div>
+        )}
+      </motion.div>
+    </motion.section>
+  )
+}
